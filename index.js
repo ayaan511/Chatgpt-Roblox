@@ -7,10 +7,11 @@ const bodyParser = require("body-parser");
 const { Configuration, OpenAIApi } = require("openai");
 
 const app = express();
-app.use(bodyParser.json());
+app.use(bodyParser.json()); // Enable JSON parsing
 
+// POST route for /chat
 app.post("/chat", async (req, res) => {
-    const { text, apiKey } = req.body;
+    const { text, apiKey } = req.body; // Extract text and API key from request
 
     if (!apiKey) {
         return res.status(400).send("API key is required.");
@@ -25,10 +26,10 @@ app.post("/chat", async (req, res) => {
         });
         res.json({ reply: completion.data.choices[0].message.content });
     } catch (error) {
-        res.status(500).send(error.message);
+        res.status(500).send(error.message); // Send the error if something goes wrong
     }
 });
 
-// Use the Render-provided port or default to 3000
+// Use dynamic port for Render
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Server running on port ${port}`));
