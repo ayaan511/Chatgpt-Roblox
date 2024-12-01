@@ -25,5 +25,6 @@ app.post("/chat", async (req, res) => {
     }
 });
 
-const port = process.env.PORT || 3000; // Use Render's PORT or default to 3000 for local testing
+// Use Render's dynamic port, or fallback to 3000 for local testing
+const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Server running on port ${port}`));
