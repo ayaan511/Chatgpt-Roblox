@@ -24,6 +24,9 @@ app.post("/chat", async (req, res) => {
         res.status(500).send(error.message);
     }
 });
+app.get("/chat", (req, res) => {
+    res.send("Use POST to send a message to ChatGPT!");
+});
 
 // Use Render's dynamic port, or fallback to 3000 for local testing
 const port = process.env.PORT || 3000;
