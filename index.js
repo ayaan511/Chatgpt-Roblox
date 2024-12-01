@@ -2,15 +2,22 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const { Configuration, OpenAIApi } = require("openai");
 
+const express = require("express");
+const bodyParser = require("body-parser");
+const { Configuration, OpenAIApi } = require("openai");
+
 const app = express();
 app.use(bodyParser.json());
 
-const openai = new OpenAIApi(new Configuration({
-    apiKey: process.env.OPENAI_API_KEY, // Securely use environment variables in Render
-}));
-
 app.post("/chat", async (req, res) => {
-    const { text } = req.body;
+    const { text, apiKey } = req.body;
+
+    if (!apiKey) {
+        return res.status(400).send("API key is required.");
+    }
+
+    const openai = new OpenAIApi(new Configuration({ apiKey }));
+
     try {
         const completion = await openai.createChatCompletion({
             model: "gpt-4",
@@ -22,4 +29,6 @@ app.post("/chat", async (req, res) => {
     }
 });
 
-app.listen(3000, () => console.log("Server running!"));
+// Use the Render-provided port or default to 3000
+const port = process.env.PORT || 3000;
+app.listen(port, () => console.log(`Server running on port ${port}`));
